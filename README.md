@@ -25,6 +25,28 @@ The main use case is:
 - Python 3.10 or newer
 - No third-party Python packages are required
 
+## Project setup
+
+Before using the generators, set up the project inside your local MagicQ show environment:
+
+1. Merge this project into your local MagicQ show directory rather than running it from an unrelated folder.
+2. Place all direction sheets in `assets/direction-sheets/`.
+3. Extract the timing data from those direction sheets into CSV files and store the resulting cue timing files in `assets/cue-stack-source/`.
+4. If you want to use the direction-sheet agent, export each relevant `.xlsx` direction sheet to HTML and place those HTML exports alongside the spreadsheets in `assets/direction-sheets/`.
+5. Place all audio files in `assets/audio/`.
+6. Convert those audio files to MP3 so the audio assets in `assets/audio/` use the expected format for this workflow. See command examples below.
+7. Copy the resulting MP3 files from `assets/audio/` into the MagicQ `audio/` directory.
+
+```bash
+# Convert to MP3 with ffmpeg
+ffmpeg -i input.mpeg -vn -c:a libmp3lame -b:a 320k output.mp3
+
+# Copy MP3 files to MagicQ audio directory
+cp assets/audio/*.mp3 audio/
+```
+
+In short, `assets/direction-sheets/` is the source area for spreadsheets and optional HTML exports, `assets/cue-stack-source/` contains the extracted cue timing CSVs, and `assets/audio/` contains the MP3 audio files matched against the CSV filenames.
+
 ## Source CSV format
 
 Each source file is a CSV with this header:
