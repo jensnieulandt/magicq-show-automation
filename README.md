@@ -33,9 +33,10 @@ Before using the generators, set up the project inside your local MagicQ show en
 2. Place all direction sheets in `assets/direction-sheets/`.
 3. Extract the timing data from those direction sheets into CSV files and store the resulting cue timing files in `assets/cue-stack-source/`.
 4. If you want to use the direction-sheet agent, export each relevant `.xlsx` direction sheet to HTML and place those HTML exports alongside the spreadsheets in `assets/direction-sheets/`.
-5. Place all audio files in `assets/audio/`.
-6. Convert those audio files to MP3 so the audio assets in `assets/audio/` use the expected format for this workflow. See command examples below.
-7. Copy the resulting MP3 files from `assets/audio/` into the MagicQ `audio/` directory.
+5. If you do not use the agent, set and adapt the cue comments manually in the CSV files in `assets/cue-stack-source/`.
+6. Place all audio files in `assets/audio/`.
+7. Convert those audio files to MP3 so the audio assets in `assets/audio/` use the expected format for this workflow. See command examples below.
+8. Copy the resulting MP3 files from `assets/audio/` into the MagicQ `audio/` directory.
 
 ```bash
 # Convert to MP3 with ffmpeg
@@ -46,6 +47,29 @@ cp assets/audio/*.mp3 audio/
 ```
 
 In short, `assets/direction-sheets/` is the source area for spreadsheets and optional HTML exports, `assets/cue-stack-source/` contains the extracted cue timing CSVs, and `assets/audio/` contains the MP3 audio files matched against the CSV filenames.
+
+## Workflow diagram
+
+```mermaid
+flowchart TD
+  A[Direction sheets in assets/direction-sheets] --> B[Extract timecodes to CSV]
+  A2[Optional HTML exports for agent use] --> C[Update cue comments]
+  B --> D[CSV files in assets/cue-stack-source]
+  C --> D
+  E[Audio source files] --> F[Convert to MP3]
+  F --> G[MP3 files in assets/audio]
+  G --> H[Copy MP3 files to MagicQ audio directory]
+  H --> I[Run generate_all_cuestacks.py]
+  D --> I
+  I --> J[Generated cue stacks in assets/cue-stacks]
+  J --> K[all_cuestacks.txt]
+  K --> L[Copy combined cue stack block into .shw file]
+  L --> M[Patched MagicQ show file]
+  H --> N[Optional: run generate_cuestack.py for one stack]
+  D --> N
+  N --> O[Patch matching C record in .shw file]
+  O --> M
+```
 
 ## Source CSV format
 
@@ -192,6 +216,8 @@ That workflow is intended for cases where:
 - the CSV already has timecodes
 - the direction sheet has richer descriptive text
 - the final cue comments must stay short and cue-like
+
+If you opt out of using the agent, you can set and refine the `comment` values manually in the source CSV files instead.
 
 The agent instructions enforce these rules:
 
