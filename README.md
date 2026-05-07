@@ -264,6 +264,7 @@ python3 generate_cuestack.py assets/cue-stack-source/1_blok1.csv \
 - The scripts assume the target cue stack already exists in the `.shw` file when using `--patch`.
 
 ## TODO
+- [ ] Cloning into a non-empty dir is hard, so we should add a script to merge this project into an existing show directory, rather than expecting users to do it manually. Or the project could be structured as a standalone package that can be installed into an existing show directory without needing to merge files at all.
 - [ ] Allow cue stack settings to be configured from the command line or a config file, rather than hardcoding them in the script.
 - [ ] Add more robust error handling and validation for input CSV files, such as checking for valid time formats and ensuring required fields are present.
 - [ ] Implement a dry-run mode that shows a summary of changes without writing output files or patching the show file, to help users verify before making changes.
